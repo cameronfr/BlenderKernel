@@ -1,0 +1,6 @@
+{
+ "argv": ["KERNEL_DIR/blender/KernelFile.py",
+          "-f", "{connection_file}"],
+ "display_name": "Blender",
+ "language": "python"
+}
