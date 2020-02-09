@@ -6,10 +6,10 @@ Blender has a Python scripting API, but it is limited to an interpreter launched
 
 Find your `DATA_DIR` with `jupyter --data-dir`. Your `KERNEL_DIR` is `DATA_DIR/kernels/`
 
-1. `git clone ...`
+1. `git clone https://github.com/cameronfr/BlenderKernel`
 1. In `kernel.json`, replace `KERNEL_DIR` with your `KERNEL_DIR`
 2. In `KernelFile.py`, replace `pythonPath` with a python site-packages path
 3. In `KernelFile.py`, replace `blenderPath` with a path to your Blender executable
-2. `mv ... KERNEL_DIR/blender`
+2. `mv BlenderKernel KERNEL_DIR/blender`
 
 Use `jupyter kernelspec list` to make sure the kernel is listed, then launch the kernel as you would any other.
