@@ -14,15 +14,15 @@ import sys
 sys.path.append("{pythonPath}")
 import bpy
 from ipykernel.kernelapp import IPKernelApp
-
 from bpy.app.handlers import persistent
-
 
 class JupyterKernelLoop(bpy.types.Operator):
     bl_idname = "asyncio.jupyter_kernel_loop"
     bl_label = "Jupyter Kernel Loop"
 
     _timer = None
+
+    kernelApp = None
 
     def modal(self, context, event):
 
@@ -39,9 +39,10 @@ class JupyterKernelLoop(bpy.types.Operator):
         self._timer = wm.event_timer_add(0.1, window=context.window)
         wm.modal_handler_add(self)
 
-        kernelApp = IPKernelApp.instance()
-        kernelApp.initialize({['python'] + kernelFileArgs})
-        kernelApp.kernel.start() # doesn't start event loop, kernelApp.start() does
+        if not JupyterKernelLoop.kernelApp:
+            JupyterKernelLoop.kernelApp = IPKernelApp.instance()
+            JupyterKernelLoop.kernelApp.initialize({['python'] + kernelFileArgs})
+            JupyterKernelLoop.kernelApp.kernel.start() # doesn't start event loop, kernelApp.start() does
 
         return {{'RUNNING_MODAL'}}
 
@@ -58,7 +59,6 @@ class TmpTimer(bpy.types.Operator):
     def modal(self, context, event):
 
         if event.type == 'TIMER':
-            bpy.utils.register_class(JupyterKernelLoop)
             bpy.ops.asyncio.jupyter_kernel_loop()
             self.cancel(context)
 
@@ -76,8 +76,18 @@ class TmpTimer(bpy.types.Operator):
         wm = context.window_manager
         wm.event_timer_remove(self._timer)
 
+bpy.utils.register_class(JupyterKernelLoop)
 bpy.utils.register_class(TmpTimer)
+
+# start Kernel and asyncio on initial load
 bpy.ops.asyncio.tmp_timer()
+
+# start asyncio on any successive loads
+@persistent
+def loadHandler(dummy):
+    bpy.ops.asyncio.jupyter_kernel_loop()
+    # If call tmp_timer here instead, kernel doesn't work on successive files if have used kernel in current file.
+bpy.app.handlers.load_post.append(loadHandler)
 
 # Need the timer hack because if immediately call registered operation, get
 # self.user_global_ns is None error in IPython/core/interactiveshell.py
