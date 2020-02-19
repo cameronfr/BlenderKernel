@@ -18,5 +18,6 @@ To test on the default cube scene,
 - run `import bpy`  
 - the Cube should move when you run `bpy.data.objects["Cube"].location[0] += 0.5` .
 
-# Issues
-- currently the Kernel dies when opening a new .blend file
+# Caveats
+- the kernel should persist when opening other .blend files
+- however, if you encounter an error like `ReferenceError: StructRNA of type Object has been removed`, the solution is to `del obj` where `obj` is something you assigned to a Blender object in a previously opened file.
