@@ -17,3 +17,6 @@ Use `jupyter kernelspec list` to make sure the kernel is listed, then launch the
 To test on the default cube scene, 
 - run `import bpy`  
 - the Cube should move when you run `bpy.data.objects["Cube"].location[0] += 0.5` .
+
+# Issues
+- currently the Kernel dies when opening a new .blend file
