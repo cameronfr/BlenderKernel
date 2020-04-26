@@ -4,6 +4,12 @@ Blender has a Python scripting API, but it is limited to an interpreter launched
 
 # Installation
 
+## Automatic
+
+Cheng-chi made a comprehensive installer at https://github.com/cheng-chi/blender_notebook hosted on pip! Instructions are [there](https://github.com/cheng-chi/blender_notebook)
+
+## Manual
+
 Find your `DATA_DIR` with `jupyter --data-dir`. Your `KERNEL_DIR` is `DATA_DIR/kernels/`
 
 1. `git clone https://github.com/cameronfr/BlenderKernel`
